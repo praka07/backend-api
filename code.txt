@@ -1,0 +1,38 @@
+/*
+Author : Prakash Velusamy
+Date : 01-03-2018
+--prerequisite
+install modules express,monk by using npm install
+create database employee and table basic in mongodb
+
+save file by .js extension
+
+*/
+
+
+var express = require('express');
+var app=express();
+var db=require('monk')('localhost:27017/employee');// here employee is database name from mongo db
+var collBasicInfo = db.get('basicinfo'); // here basic info is record name in employee database
+app.get('/',function(req,res){
+	        res.writeHead(200, { 'Content-Type': 'text/html' }); 
+            res.write('<html> Hello Prakash !!!</html>');
+        res.end();
+});
+
+app.get('/employeeinfo/:desg', (req, res) => {
+     const empDetails = { empDesg: req.params.desg };
+	
+	collBasicInfo.find(empDetails, (err, empInfo) => {
+      if (err) {
+        res.send({'error':'An error has occurred'});
+      } else {
+		  console.log("Result form db"+empInfo);
+        res.send(item);
+      } 
+    });
+});
+
+app.listen('2020',() =>{
+	console.log('server is running on port 2020....');
+});
